@@ -1,7 +1,10 @@
 package br.com.itau.desafio.business.usecase;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
+import br.com.itau.desafio.business.exception.FutureDateTimeException;
 import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
@@ -11,6 +14,12 @@ public class TransitionValueUseCase {
     private TransitionValueRepository transitionValueRepository;
 
     public void transitionValue(TransitionValueRequest transitionValueRequest){
+
+        if (transitionValueRequest.getDataHora().isAfter(LocalDateTime.now())) {
+            
+            throw new FutureDateTimeException();
+
+        }
 
         this.transitionValueRepository.save(transitionValueRequest);
 

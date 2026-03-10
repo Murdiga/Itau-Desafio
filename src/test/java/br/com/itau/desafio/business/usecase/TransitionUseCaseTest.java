@@ -3,6 +3,7 @@ package br.com.itau.desafio.business.usecase;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import br.com.itau.desafio.business.exception.FutureDateTimeException;
 import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
@@ -44,6 +46,22 @@ public class TransitionUseCaseTest {
             () -> assertEquals(100.50, transition.getValor()),
             () -> assertEquals(transitionValueRequest.getDataHora(), transition.getDataHora())
         );
+    }
+
+    @Test
+    public void shouldNotTransitionValueWithFutureDateTime(){
+
+        TransitionValueRequest transitionValueRequest = new TransitionValueRequest();
+
+        transitionValueRequest.setValor(100.50);
+        transitionValueRequest.setDataHora(LocalDateTime.now().plusDays(1));
+
+        var exception = assertThrows(FutureDateTimeException.class, () -> {
+            transitionValueUseCase.transitionValue(transitionValueRequest);
+        });
+
+        assertEquals("The provided date time is after the current date time.", exception.getMessage());
+
     }
 
 }
