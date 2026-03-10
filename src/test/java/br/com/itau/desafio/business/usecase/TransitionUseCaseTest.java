@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import br.com.itau.desafio.business.exception.FutureDateTimeException;
+import br.com.itau.desafio.business.exception.NegativeValueException;
 import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
@@ -33,7 +35,7 @@ public class TransitionUseCaseTest {
         TransitionValueRequest transitionValueRequest = new TransitionValueRequest();
         ArgumentCaptor<TransitionValueRequest> captor = ArgumentCaptor.forClass(TransitionValueRequest.class);
 
-        transitionValueRequest.setValor(100.50);
+        transitionValueRequest.setValor(BigDecimal.valueOf(100.50));
         transitionValueRequest.setDataHora(LocalDateTime.now());
 
         transitionValueUseCase.transitionValue(transitionValueRequest);
@@ -43,7 +45,7 @@ public class TransitionUseCaseTest {
         var transition = captor.getValue();
         
         assertAll(
-            () -> assertEquals(100.50, transition.getValor()),
+            () -> assertEquals(BigDecimal.valueOf(100.50), transition.getValor()),
             () -> assertEquals(transitionValueRequest.getDataHora(), transition.getDataHora())
         );
     }
@@ -53,7 +55,7 @@ public class TransitionUseCaseTest {
 
         TransitionValueRequest transitionValueRequest = new TransitionValueRequest();
 
-        transitionValueRequest.setValor(100.50);
+        transitionValueRequest.setValor(BigDecimal.valueOf(100.50));
         transitionValueRequest.setDataHora(LocalDateTime.now().plusDays(1));
 
         var exception = assertThrows(FutureDateTimeException.class, () -> {
@@ -61,6 +63,22 @@ public class TransitionUseCaseTest {
         });
 
         assertEquals("The provided date time is after the current date time.", exception.getMessage());
+
+    }
+
+    @Test
+    public void shouldNotTransitionValueWithNegativeValue(){
+
+        TransitionValueRequest transitionValueRequest = new TransitionValueRequest();
+
+        transitionValueRequest.setValor(BigDecimal.valueOf(-20));
+        transitionValueRequest.setDataHora(LocalDateTime.now());
+
+        var exception = assertThrows(NegativeValueException.class, () -> {
+            transitionValueUseCase.transitionValue(transitionValueRequest);
+        });
+
+        assertEquals("Value cannot be negative.", exception.getMessage());
 
     }
 
