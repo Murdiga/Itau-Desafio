@@ -1,5 +1,6 @@
 package br.com.itau.desafio.infrastructure.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ public class TransitionValueEntity {
     //@GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    Double valor;
+    BigDecimal valor;
 
     LocalDateTime dataHora;
 

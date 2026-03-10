@@ -1,5 +1,6 @@
 package br.com.itau.desafio.infrastructure.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class TransitionValueRequest {
 
-    private Double valor;
+    private BigDecimal valor;
     private LocalDateTime dataHora;
 
 }
