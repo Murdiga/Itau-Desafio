@@ -15,8 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.itau.desafio.business.exception.FutureDateTimeException;
-import br.com.itau.desafio.business.exception.NegativeValueException;
+import br.com.itau.desafio.business.exception.transitionvalueexception.FutureDateTimeException;
+import br.com.itau.desafio.business.exception.transitionvalueexception.MissingRequiredFieldException;
+import br.com.itau.desafio.business.exception.transitionvalueexception.NegativeValueException;
 import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
@@ -79,6 +80,22 @@ public class TransitionUseCaseTest {
         });
 
         assertEquals("Value cannot be negative.", exception.getMessage());
+
+    }
+
+    @Test
+    public void shouldNotTransitionValueWithMissingRequiredField(){
+
+        TransitionValueRequest transitionValueRequest = new TransitionValueRequest();
+
+        transitionValueRequest.setValor(null);
+        transitionValueRequest.setDataHora(null);
+
+        var exception = assertThrows(MissingRequiredFieldException.class, () -> {
+            transitionValueUseCase.transitionValue(transitionValueRequest);
+        });
+
+        assertEquals("All fields must be provided to perform the transaction.", exception.getMessage());
 
     }
 
