@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.itau.desafio.business.exception.transitionvalueexception.FutureDateTimeException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.MissingRequiredFieldException;
@@ -11,6 +12,7 @@ import br.com.itau.desafio.business.exception.transitionvalueexception.NegativeV
 import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
+@Service
 public class TransitionValueUseCase {
 
     @Autowired

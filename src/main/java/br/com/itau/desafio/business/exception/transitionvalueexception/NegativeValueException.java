@@ -1,10 +1,14 @@
 package br.com.itau.desafio.business.exception.transitionvalueexception;
 
-public class NegativeValueException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+import br.com.itau.desafio.business.exception.businessexception.BusinessException;
+
+public class NegativeValueException extends BusinessException {
 
     public NegativeValueException() {
 
-        super("Value cannot be negative.");
+        super("Value cannot be negative.", HttpStatus.UNPROCESSABLE_CONTENT);
 
     }
 

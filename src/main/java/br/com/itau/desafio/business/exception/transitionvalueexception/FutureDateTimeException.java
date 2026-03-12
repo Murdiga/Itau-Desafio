@@ -1,9 +1,13 @@
 package br.com.itau.desafio.business.exception.transitionvalueexception;
 
-public class FutureDateTimeException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+import br.com.itau.desafio.business.exception.businessexception.BusinessException;
+
+public class FutureDateTimeException extends BusinessException{
 
     public FutureDateTimeException() {
-        super("The provided date time is after the current date time.");
+        super("The provided date time is after the current date time.", HttpStatus.UNPROCESSABLE_CONTENT);
     }
 
 }
