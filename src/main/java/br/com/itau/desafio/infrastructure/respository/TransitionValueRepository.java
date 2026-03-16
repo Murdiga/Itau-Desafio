@@ -1,8 +1,6 @@
 package br.com.itau.desafio.infrastructure.respository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -17,9 +15,9 @@ public class TransitionValueRepository {
 
     private Long idSequence = 1L;
 
-    private TransitionValueEntity transitionValueEntity = new TransitionValueEntity();
-
     public void save(TransitionValueRequest transitionValueRequest){
+
+        TransitionValueEntity transitionValueEntity = new TransitionValueEntity();
 
         transitionValueEntity.setId(idSequence);
         transitionValueEntity.setValor(transitionValueRequest.getValor());
@@ -28,6 +26,16 @@ public class TransitionValueRepository {
         transitionValueMap.put(idSequence, transitionValueEntity);
 
         idSequence++;
+
+        System.out.println(transitionValueMap.values());
+
+    }
+
+    public void delete(){
+
+        this.transitionValueMap.clear();
+
+        System.out.println(transitionValueMap.values());
 
     }
 

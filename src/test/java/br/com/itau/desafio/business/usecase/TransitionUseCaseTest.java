@@ -30,6 +30,9 @@ public class TransitionUseCaseTest {
     @InjectMocks
     private TransitionValueUseCase transitionValueUseCase;
 
+    @InjectMocks
+    private DeleteAllTransitionsUseCase deleteAllTransitionsUseCase;
+
     @Test
     public void shouldTransitionValue(){
 
@@ -96,6 +99,15 @@ public class TransitionUseCaseTest {
         });
 
         assertEquals("All fields must be provided to perform the transaction.", exception.getMessage());
+
+    }
+
+    @Test
+    public void shouldClearAllTransitions(){
+
+        deleteAllTransitionsUseCase.deleteAllTrasintions();
+
+        verify(transitionValueRepository).delete();
 
     }
 
