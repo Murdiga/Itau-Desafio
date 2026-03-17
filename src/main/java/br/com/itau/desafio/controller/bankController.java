@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itau.desafio.business.exception.businessexception.BusinessException;
 import br.com.itau.desafio.business.usecase.DeleteAllTransitionsUseCase;
+import br.com.itau.desafio.business.usecase.GenerateStatisticsUseCase;
 import br.com.itau.desafio.business.usecase.TransitionValueUseCase;
-import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
+import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
 
 @RestController
 @RequestMapping("/bank")
@@ -23,6 +25,9 @@ public class bankController {
 
     @Autowired
     private DeleteAllTransitionsUseCase deleteAllTransitionsUseCase;
+
+    @Autowired
+    private GenerateStatisticsUseCase generateStatisticsUseCase;
 
     @PostMapping("/transacao")
     public ResponseEntity<Object> transition(@RequestBody TransitionValueRequest transitionValueRequest){
@@ -53,6 +58,19 @@ public class bankController {
             deleteAllTransitionsUseCase.deleteAllTrasintions();
 
             return ResponseEntity.status(HttpStatus.OK).build();
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/estatistica")
+    public ResponseEntity<Object> getStatistics(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(generateStatisticsUseCase.generateStatistics());
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -1,4 +1,4 @@
-package br.com.itau.desafio.infrastructure.dto;
+package br.com.itau.desafio.infrastructure.dto.transitionValue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

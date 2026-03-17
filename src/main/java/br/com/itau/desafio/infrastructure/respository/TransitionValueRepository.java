@@ -1,17 +1,18 @@
 package br.com.itau.desafio.infrastructure.respository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
+import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.entity.TransitionValueEntity;
 
 @Repository
 public class TransitionValueRepository {
 
-    private Map<Long, TransitionValueEntity> transitionValueMap = new HashMap<>();
+    private List<TransitionValueEntity> transitionValueList = new ArrayList<>();
 
     private Long idSequence = 1L;
 
@@ -23,25 +24,35 @@ public class TransitionValueRepository {
         transitionValueEntity.setValor(transitionValueRequest.getValor());
         transitionValueEntity.setDataHora(transitionValueRequest.getDataHora());
 
-        transitionValueMap.put(idSequence, transitionValueEntity);
+        transitionValueList.add(transitionValueEntity);
 
         idSequence++;
-
-        System.out.println(transitionValueMap.values());
 
     }
 
     public void delete(){
 
-        this.transitionValueMap.clear();
-
-        System.out.println(transitionValueMap.values());
+        this.transitionValueList.clear();
 
     }
 
-    public TransitionValueEntity findById(Long id){
+    public List<TransitionValueEntity> findLastMinuteTransitions(){
 
-        return transitionValueMap.get(id);
+        List<TransitionValueEntity> result = new ArrayList<>();
+
+        for(int i = transitionValueList.size() - 1; i > 0; i--){
+
+            var entity = transitionValueList.get(i);
+
+            if (entity.getDataHora().isBefore(LocalDateTime.now().minusMinutes(1))) {
+                break;
+            }
+
+            result.add(entity);
+
+        }
+
+        return result;
 
     }
 

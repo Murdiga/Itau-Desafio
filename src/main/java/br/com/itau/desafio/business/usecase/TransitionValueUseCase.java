@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.itau.desafio.business.exception.transitionvalueexception.FutureDateTimeException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.MissingRequiredFieldException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.NegativeValueException;
-import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
+import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
 @Service

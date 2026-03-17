@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.itau.desafio.business.exception.transitionvalueexception.FutureDateTimeException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.MissingRequiredFieldException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.NegativeValueException;
-import br.com.itau.desafio.infrastructure.dto.TransitionValueRequest;
+import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +32,9 @@ public class TransitionUseCaseTest {
 
     @InjectMocks
     private DeleteAllTransitionsUseCase deleteAllTransitionsUseCase;
+
+    @InjectMocks
+    private GenerateStatisticsUseCase generateStatisticsUseCase;
 
     @Test
     public void shouldTransitionValue(){
@@ -108,6 +111,23 @@ public class TransitionUseCaseTest {
         deleteAllTransitionsUseCase.deleteAllTrasintions();
 
         verify(transitionValueRepository).delete();
+
+    }
+
+    @Test
+    public void shouldGenerateStatisticsWhenTransitionsExist(){
+
+        var statistics = generateStatisticsUseCase.generateStatistics();
+
+        verify(transitionValueRepository).findLastMinuteTransitions();
+
+        assertAll(() -> {
+            assertEquals(0, statistics.getCount());
+            assertEquals(BigDecimal.ZERO, statistics.getSum());
+            assertEquals(BigDecimal.ZERO, statistics.getAvg());
+            assertEquals(BigDecimal.ZERO, statistics.getMin());
+            assertEquals(BigDecimal.ZERO, statistics.getMax());           
+        });
 
     }
 

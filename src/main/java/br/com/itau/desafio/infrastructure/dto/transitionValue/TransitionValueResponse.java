@@ -1,4 +1,4 @@
-package br.com.itau.desafio.infrastructure.dto;
+package br.com.itau.desafio.infrastructure.dto.transitionValue;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
