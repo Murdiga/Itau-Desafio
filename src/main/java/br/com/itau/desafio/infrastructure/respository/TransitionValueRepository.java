@@ -28,6 +28,8 @@ public class TransitionValueRepository {
 
         idSequence++;
 
+        System.out.println(transitionValueList);
+
     }
 
     public void delete(){
@@ -38,19 +40,11 @@ public class TransitionValueRepository {
 
     public List<TransitionValueEntity> findLastMinuteTransitions(){
 
-        List<TransitionValueEntity> result = new ArrayList<>();
-
-        for(int i = transitionValueList.size() - 1; i > 0; i--){
-
-            var entity = transitionValueList.get(i);
-
-            if (entity.getDataHora().isBefore(LocalDateTime.now().minusMinutes(1))) {
-                break;
-            }
-
-            result.add(entity);
-
-        }
+        List<TransitionValueEntity> result = transitionValueList.stream().filter(item -> 
+                                             item.getDataHora().isAfter(LocalDateTime.now().minusMinutes(1))
+                                             &&
+                                             item.getDataHora().isBefore(LocalDateTime.now())
+                                            ).toList();
 
         return result;
 
