@@ -28,14 +28,12 @@ public class TransitionValueRepository {
 
         idSequence++;
 
-        System.out.println(transitionValueList);
-
     }
 
     public void delete(){
 
         this.transitionValueList.clear();
-
+        
     }
 
     public List<TransitionValueEntity> findLastMinuteTransitions(){
