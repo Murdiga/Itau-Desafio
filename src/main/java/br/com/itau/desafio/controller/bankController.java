@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.itau.desafio.business.exception.businessexception.BusinessException;
 import br.com.itau.desafio.business.usecase.DeleteAllTransitionsUseCase;
 import br.com.itau.desafio.business.usecase.GenerateStatisticsUseCase;
 import br.com.itau.desafio.business.usecase.TransitionValueUseCase;
 import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/bank")
-public class bankController {
+@Slf4j
+public class BankController {
 
     @Autowired
     private TransitionValueUseCase transitionValueUseCase;
@@ -31,50 +32,26 @@ public class bankController {
 
     @PostMapping("/transacao")
     public ResponseEntity<Object> transition(@RequestBody TransitionValueRequest transitionValueRequest){
-
-        try {
             
             transitionValueUseCase.transitionValue(transitionValueRequest);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
-
-        } catch (BusinessException e) {
-
-            return ResponseEntity.status(e.getStatus()).body(e.getMessage());
-
-        } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-
-        }
 
     }
 
     @DeleteMapping("/transacao")
     public ResponseEntity<Object> deleteAllTransitions(){
 
-        try {
-            
-            deleteAllTransitionsUseCase.deleteAllTrasintions();
+        deleteAllTransitionsUseCase.deleteAllTrasintions();
 
-            return ResponseEntity.status(HttpStatus.OK).build();
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/estatistica")
     public ResponseEntity<Object> getStatistics(){
 
-        try {
 
-            return ResponseEntity.status(HttpStatus.OK).body(generateStatisticsUseCase.generateStatistics());
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(generateStatisticsUseCase.generateStatistics());
 
     }
 
