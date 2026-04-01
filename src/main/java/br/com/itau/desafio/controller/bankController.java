@@ -32,15 +32,23 @@ public class BankController {
 
     @PostMapping("/transacao")
     public ResponseEntity<Object> transition(@RequestBody TransitionValueRequest transitionValueRequest){
-            
-            transitionValueUseCase.transitionValue(transitionValueRequest);
+        
+        log.info("Accepted request to create a new transition");
 
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+        transitionValueUseCase.transitionValue(transitionValueRequest);
+
+        log.debug("New transition payload: {}", transitionValueRequest);
+
+        log.info("Successfully created a new transition");
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
     @DeleteMapping("/transacao")
     public ResponseEntity<Object> deleteAllTransitions(){
+
+        log.info("Accepted request to delete all transitions");
 
         deleteAllTransitionsUseCase.deleteAllTrasintions();
 
@@ -50,8 +58,13 @@ public class BankController {
     @GetMapping("/estatistica")
     public ResponseEntity<Object> getStatistics(){
 
+        log.info("Accepted request to generate statistics");
 
-        return ResponseEntity.status(HttpStatus.OK).body(generateStatisticsUseCase.generateStatistics());
+        var stats = generateStatisticsUseCase.generateStatistics();
+
+        log.debug("Statistics generated: {}", stats);
+
+        return ResponseEntity.status(HttpStatus.OK).body(stats);
 
     }
 
