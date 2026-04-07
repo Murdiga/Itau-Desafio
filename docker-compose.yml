@@ -1,0 +1,8 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: desafio-itau
+    ports:
+      - "8081:8080"
