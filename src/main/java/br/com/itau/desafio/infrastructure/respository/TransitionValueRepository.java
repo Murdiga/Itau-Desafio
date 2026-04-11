@@ -36,10 +36,10 @@ public class TransitionValueRepository {
         
     }
 
-    public List<TransitionValueEntity> findLastMinuteTransitions(){
+    public List<TransitionValueEntity> findLastMinuteTransitions(int minutes){
 
         List<TransitionValueEntity> result = transitionValueList.stream().filter(item -> 
-                                             item.getDataHora().isAfter(LocalDateTime.now().minusMinutes(1))
+                                             item.getDataHora().isAfter(LocalDateTime.now().minusMinutes(minutes))
                                              &&
                                              item.getDataHora().isBefore(LocalDateTime.now())
                                             ).toList();

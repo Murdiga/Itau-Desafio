@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itau.desafio.business.usecase.DeleteAllTransitionsUseCase;
 import br.com.itau.desafio.business.usecase.GenerateStatisticsUseCase;
 import br.com.itau.desafio.business.usecase.TransitionValueUseCase;
 import br.com.itau.desafio.infrastructure.dto.exception.ExceptionResponse;
+import br.com.itau.desafio.infrastructure.dto.statistics.GenerateStatisticsRequest;
 import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -94,7 +96,7 @@ public class BankController {
     @ApiResponse(responseCode = "500", description = "Internal server error", content = {
         @Content(schema = @Schema(implementation = ExceptionResponse.class))
     })
-    public ResponseEntity<Object> getStatistics(){
+    public ResponseEntity<Object> getStatistics(@RequestBody(required = false) GenerateStatisticsRequest generateStatisticsRequest){
 
         log.info("Accepted request to generate statistics");
 
@@ -102,7 +104,7 @@ public class BankController {
 
         try{
 
-            var stats = generateStatisticsUseCase.generateStatistics();
+            var stats = generateStatisticsUseCase.generateStatistics(generateStatisticsRequest);
 
             log.debug("Statistics generated: {}", stats);
 

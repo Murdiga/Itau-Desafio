@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.itau.desafio.infrastructure.dto.statistics.GenerateStatisticsRequest;
 import br.com.itau.desafio.infrastructure.dto.statistics.GenerateStatisticsResponse;
 import br.com.itau.desafio.infrastructure.entity.TransitionValueEntity;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
@@ -15,7 +16,15 @@ public class GenerateStatisticsUseCase {
     @Autowired
     private TransitionValueRepository transitionValueRepository;
 
-    public GenerateStatisticsResponse generateStatistics(){
+    public GenerateStatisticsResponse generateStatistics(GenerateStatisticsRequest generateStatisticsRequest){
+
+        if (generateStatisticsRequest == null) {
+            
+            generateStatisticsRequest = new GenerateStatisticsRequest();
+
+            generateStatisticsRequest.setMinutes(1);
+
+        }
 
         int count = 0;
         BigDecimal sum = BigDecimal.ZERO;
@@ -24,7 +33,7 @@ public class GenerateStatisticsUseCase {
 
         GenerateStatisticsResponse generateStatisticsResponse = new GenerateStatisticsResponse();
 
-        var result = transitionValueRepository.findLastMinuteTransitions();
+        var result = transitionValueRepository.findLastMinuteTransitions(generateStatisticsRequest.getMinutes());
 
         if (result.isEmpty()) {
             

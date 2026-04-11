@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.apache.logging.log4j.core.tools.Generate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.itau.desafio.business.exception.transitionvalueexception.FutureDateTimeException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.MissingRequiredFieldException;
 import br.com.itau.desafio.business.exception.transitionvalueexception.NegativeValueException;
+import br.com.itau.desafio.infrastructure.dto.statistics.GenerateStatisticsRequest;
 import br.com.itau.desafio.infrastructure.dto.transitionValue.TransitionValueRequest;
 import br.com.itau.desafio.infrastructure.respository.TransitionValueRepository;
 
@@ -116,10 +118,12 @@ public class TransitionUseCaseTest {
 
     @Test
     public void shouldGenerateStatisticsWhenTransitionsExist(){
+        
+        GenerateStatisticsRequest generateStatisticsRequest = new GenerateStatisticsRequest();
 
-        var statistics = generateStatisticsUseCase.generateStatistics();
+        var statistics = generateStatisticsUseCase.generateStatistics(generateStatisticsRequest);
 
-        verify(transitionValueRepository).findLastMinuteTransitions();
+        verify(transitionValueRepository).findLastMinuteTransitions(generateStatisticsRequest.getMinutes());
 
         assertAll(() -> {
             assertEquals(0, statistics.getCount());
