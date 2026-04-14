@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.itau.desafio.business.usecase.DeleteAllTransitionsUseCase;
@@ -95,7 +96,7 @@ public class BankController {
     @ApiResponse(responseCode = "500", description = "Internal server error", content = {
         @Content(schema = @Schema(implementation = ExceptionResponse.class))
     })
-    public ResponseEntity<Object> getStatistics(@RequestBody(required = false) GenerateStatisticsRequest generateStatisticsRequest){
+    public ResponseEntity<Object> getStatistics(@RequestParam(required = false, defaultValue = "1") Integer minutes){
 
         log.info("Accepted request to generate statistics");
 
@@ -103,7 +104,11 @@ public class BankController {
 
         try{
 
-            var stats = generateStatisticsUseCase.generateStatistics(generateStatisticsRequest);
+            GenerateStatisticsRequest request = new GenerateStatisticsRequest();
+
+            request.setMinutes(minutes);
+
+            var stats = generateStatisticsUseCase.generateStatistics(request);
 
             log.debug("Statistics generated: {}", stats);
 
